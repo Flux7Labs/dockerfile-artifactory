@@ -7,9 +7,9 @@ ENV ARTIFACTORY_VERSION 3.7.0
 ENV ARTIFACTORY_SHA1 d51d78b2f9d7135d60697f6c74879ac6d4f150ef
 
 ## ENV attributes for proxy. These HAVE to get overwritten when you run the container
-ENV no_proxy localhost,127.0.0.0/8
-ENV http_proxy http://proxy.ecos.aws:8080
-ENV https_proxy http://proxy.ecos.aws:8080
+#ENV no_proxy localhost,127.0.0.0/8
+#ENV http_proxy http://proxy.ecos.aws:8080
+#ENV https_proxy http://proxy.ecos.aws:8080
 
 # Disable Tomcat's manager application.
 RUN rm -rf webapps/*
