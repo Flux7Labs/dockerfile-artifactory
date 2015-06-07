@@ -6,6 +6,11 @@ MAINTAINER Matthias Grüter <matthias@grueter.name>
 ENV ARTIFACTORY_VERSION 3.7.0
 ENV ARTIFACTORY_SHA1 d51d78b2f9d7135d60697f6c74879ac6d4f150ef
 
+## ENV attributes for proxy. These HAVE to get overwritten when you run the container
+ENV no_proxy localhost,127.0.0.0/8
+ENV http_proxy http://proxy.ecos.aws:8080
+ENV https_proxy http://proxy.ecos.aws:8080
+
 # Disable Tomcat's manager application.
 RUN rm -rf webapps/*
 
@@ -20,13 +25,14 @@ RUN \
 # Fetch and install Artifactory OSS war archive.
 RUN \
   echo $ARTIFACTORY_SHA1 artifactory.zip > artifactory.zip.sha1 && \
-  curl -L -o artifactory.zip https://bintray.com/artifact/download/jfrog/artifactory/artifactory-${ARTIFACTORY_VERSION}.zip && \
-  sha1sum -c artifactory.zip.sha1 && \
+#  curl -L -o artifactory.zip https://bintray.com/artifact/download/jfrog/artifactory/artifactory-${ARTIFACTORY_VERSION}.zip && \
+  curl -L -o artifactory.zip https://bintray.com/artifact/download/jfrog/artifactory-pro/org/artifactory/powerpack/artifactory-powerpack-standalone/3.7.0/artifactory-powerpack-standalone-3.7.0.zip && \
+#  sha1sum -c artifactory.zip.sha1 && \
   unzip -j artifactory.zip "artifactory-*/webapps/artifactory.war" -d webapps && \
   rm artifactory.zip
 
 # Add hook to install custom artifactory.war (i.e. Artifactory Pro) to replace the default OSS installation.
-ONBUILD ADD ./artifactory.war webapps/
+#ONBUILD ADD ./artifactory.war webapps/
 
 # Expose tomcat runtime options through the RUNTIME_OPTS environment variable.
 #   Example to set the JVM's max heap size to 256MB use the flag
